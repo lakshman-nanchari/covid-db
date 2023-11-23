@@ -41,7 +41,7 @@ const reportSnakeToCamelCase = (newObject) => {
 const initializeDbAndServer = async () => {
   try {
     db = await open({
-      fileName: dbPath,
+      filename: dbPath,
       driver: sqlite3.Database,
     });
     app.listen(3000, () => {
@@ -72,7 +72,7 @@ app.get("/states/", async (request, response) => {
 // Return a state based on state ID
 
 app.get("/states/:stateId/", async (request, response) => {
-  const { sateId } = request.params;
+  const { stateId } = request.params;
   const getState = `
       SELECT *
       FROM state
@@ -171,7 +171,7 @@ app.get("/states/:stateId/stats/", async (request, response) => {
       SUM(active) AS active,
       SUM(deaths) AS deaths
     FROM district
-    WHERE state_id = ${sateId};`;
+    WHERE state_id = ${stateId};`;
   const stateReport = await db.get(getStateReport);
   const resultReport = reportSnakeToCamelCase(stateReport);
   response.send(resultReport);
